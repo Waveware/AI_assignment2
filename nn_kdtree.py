@@ -154,24 +154,25 @@ def main():
     tsdf = pd.DataFrame(test_set)
     ts = tsdf.to_numpy()
 
-    dim = 0
+    dim = args.dimension
 
+    # construct tree
     tree = BuildKdTree(train_set, dim)
 
-    tr = 1 # trace value
+    # trace value for debugging
+    tr = 0 
 
-    #print(QueryTree1NN(tree, test_set[0], tr))
-    #print(ts.shape[0])
-    #closest = QueryTree(tree,ts[0], tr)
-    #print(closest.p[-1])
-
+    # input test on trained KdTree and find 1NN for each sample.
     wine_quality_predictions = []
     for wine in range(ts.shape[0]):
         closest_wine_approximation = QueryTree(tree, ts[wine], tr)
         wine_quality_predictions.append(closest_wine_approximation.p[-1])
-    
-    print("Wine predictions:")
-    print(wine_quality_predictions)
+
+    #print("Wine predictions:")
+    i = len(wine_quality_predictions)-1
+    while(i > -1):
+        print(int(wine_quality_predictions[i]))
+        i -= 1
 
 
 if __name__ == "__main__":
