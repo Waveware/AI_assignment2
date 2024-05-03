@@ -11,7 +11,7 @@ class Node:
     def __init__(self):
         self.d = None
         self.val = None
-        self.p = None
+        self.p = np.array([False, False, False, False])
         self.left = None
         self.right = None
 
@@ -97,7 +97,7 @@ def QueryTreeSearch(this_node, query_point, nearest_distance, nearest_node, trac
     if (trace == 1):
         print("-Current Node Point:", str(this_node.p))
         print("-Nearest Distance:", nearest_distance)
-    if (this_node != None): # does this node exist
+    if (this_node.p.any()): # does this node exist
         # calculate distance and comparing with nearest
         if (trace == 1):
             print("--Calculating Distance of Q with C")
@@ -130,7 +130,8 @@ def QueryTreeSearch(this_node, query_point, nearest_distance, nearest_node, trac
                 if (trace == 1):
                     print("-----checking right subtree...")
                 return QueryTreeSearch(this_node.right, query_point, nearest_distance, nearest_node, trace)            
-
+    else:
+        return nearest_node
 
 
 
@@ -160,7 +161,7 @@ def main():
     tree = BuildKdTree(train_set, dim)
 
     # trace value for debugging
-    tr = 0 
+    tr = 0
 
     # input test on trained KdTree and find 1NN for each sample.
     wine_quality_predictions = []
