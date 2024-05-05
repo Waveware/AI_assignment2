@@ -8,7 +8,7 @@ from math import ceil
 from statistics import median
 
 # trace value for debugging
-tr = 0
+tr = 2
 
 s = sys.stdout
 
@@ -180,27 +180,24 @@ def QueryNNSearch(tree, query):
         print("Starting QNNSearch for", str(query))
         print("With node:", str(tree))
     # keep going down until a leaf node is reached
-    while (node.is_leaf() == False):
+    while (node != None):
+        if (node.is_leaf() == True):
+            break
         if (tr == 2):
-            print('Going down:',  str(node), "| d:", str(node.d), "| p:", str(node.p))
+            print('Going down to:',  str(node), "| d:", str(node.d), "| p:", str(node.p))
         if (query[node.d] < node.val):
-            if (node.left == None):
-                continue
             node = node.left
             node_stack.append(node)
         else:
-            if (node.right == None):
-                continue
             node = node.right
             node_stack.append(node)         
     
     # leaf node is now current best node
+    while node is None:
+        node = node_stack.pop()
+
     if (tr == 2):
         print("best_node:", str(node), "| d:", str(node.d), "| p:", str(node.p))
-    while False in node.p:
-        node = node_stack.pop()
-        if (tr == 2):
-            print('-- False found. choosing previous node:', str(node), "| d:", str(node.d), "| p:", str(node.p))
     best_node = node
     best_distance = dist(query, best_node.p[0:11])
     if (tr == 2):
@@ -272,15 +269,13 @@ def main():
     # input test on trained KdTree and find 1NN for each sample.
     wine_quality_predictions = []
     for wine in range(ts.shape[0]):
-        closest_wine_approximation = QueryTree(tree, ts[wine], tr)
-        #closest_wine_approximation = QueryNNSearch(tree, ts[wine])
+        #closest_wine_approximation = QueryTree(tree, ts[wine], tr)
+        closest_wine_approximation = QueryNNSearch(tree, ts[wine])
         wine_quality_predictions.append(closest_wine_approximation.p[-1])
 
     #print("Wine predictions:")
-    i = len(wine_quality_predictions)-1
-    while(i > -1):
-        print(int(wine_quality_predictions[i]))
-        i -= 1
+    for wine in wine_quality_predictions:
+        print(int(wine))
 
 
 if __name__ == "__main__":
