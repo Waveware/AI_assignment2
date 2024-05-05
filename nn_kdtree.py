@@ -8,9 +8,8 @@ from math import ceil
 from statistics import median
 
 # trace value for debugging
-tr = 0
+tr = 3
 
-s = sys.stdout
 
 class Node:
     def __init__(self):
@@ -261,7 +260,7 @@ def main():
     tsdf = pd.DataFrame(test_set)
     ts = tsdf.to_numpy()
 
-    dim = args.dimension
+    dim = eval(sys.argv[3])
 
     # construct tree
     tree = BuildKdTree(train_set, dim)
@@ -276,7 +275,6 @@ def main():
     #print("Wine predictions:")
     for wine in wine_quality_predictions:
         print(int(wine))
-
 
 if __name__ == "__main__":
     main()
