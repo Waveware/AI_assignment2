@@ -8,7 +8,7 @@ from math import ceil
 from statistics import median
 
 # trace value for debugging
-tr = 2
+tr = 0
 
 s = sys.stdout
 
